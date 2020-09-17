@@ -37,13 +37,14 @@ public:
 
 		std::cout << (int) this->data << std::endl << std::endl;
 
-		unsigned char it = this->data;
+		char it = this->data;	// This is the char that i need for conversion to binary
+								// However using a signed char yields errors.
 		char str[8];
 		int index = 7;
 
 		while (index + 1)
 		{
-			std::cout << it << "\t";
+			std::cout << (int) it << "\t"; // debugless debugger :>
 			if (it % 2)
 			{
 				str[index] = '1';
@@ -62,10 +63,12 @@ public:
 
 int main()
 {
-	qpfloat& t = *(new qpfloat(-20));
+	qpfloat& t = *(new qpfloat(-20)); // less than minimum
+	qpfloat& s = *(new qpfloat(20)); // greater than maximum
 
-	t.bin();
+	
 	std::cout << t.bin() << std::endl;
+	std::cout << s.bin() << std::endl;
 
 	return 0;
 }
