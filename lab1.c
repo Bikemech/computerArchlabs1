@@ -16,30 +16,29 @@ void signtype()
 	* 	127 & -127		1000 0001 =
 	*					0000 0001 // for two's complement
 	*/
-	
-	if (r == 1) printf("Using two's complement\n");
-	else printf("Using signed integer\n");
+
+	if (r == 1) printf("Using two's complement\n\n");
+	else if (r == 127) printf("Using signed integer\n\n");
+	else printf("wut??\n\n");
 }
 
 
 int main()
 {
-	char* mem = (char*) malloc(sizeof(int) * 2);
+	int s = 8;
+	int offset = 2;
+	char* mem = (char*) malloc(sizeof(int) * s);
 	int* ptr = (int*) mem;
-	*(ptr + 1) = 0; // Initializing to erase scrap data;
 
-	*(ptr + 1) = 0x04030201;
-	// *ptr = 0x80;
+	*(ptr + offset) = 0x04030201;
 
-
-	printf("\n");
-
-	for (int i = 4; i < sizeof(int) + 4; i++)
+	for (int i = 0; i < 4 * s; i++)
 	{
-		printf("%x\t", (int) (256 + mem[i]) % 256);
+		printf("%x\t", (int) mem[i] & 0xff);
+		if (i % 4 == 3) printf("\n");
 	}
-	printf("\n%d\n", *ptr);
+	printf("\n");
 	signtype();
-
+	return 0;
 
 }
