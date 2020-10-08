@@ -16,7 +16,7 @@ class qpfloat
 	// e-mach = 0.0625
 	// e-mach is represented as: 0 011 0001
 
-	// smallest non negative representable value = 1/(2^3 * 2^4) = 1/(128)
+	// smallest non negative representable value = 1/(2^3 * 2^4) = 1/(64)
 	// smallest num:	0 000 0001
 
 	// biggest representable value = 2^3 * (2 - 2^-4) = 15.5
@@ -28,9 +28,16 @@ class qpfloat
 public:
 	qpfloat(float i)
 	{
-		this->data = 0;
-		// if (i > 15.5) this->data = 0x70;
-		// if (i < -15.5) this->data = 0xf0;
+		if (i > 15.5)
+		{
+			this->data = 0x70;
+			return;
+		}
+		if (i < -15.5)
+		{
+			this->data = 0xf0;
+			return;
+		}
 
 		float normBias = i * pow(2, -124);
 		//	Float bias = 127, our bias = 3
@@ -67,18 +74,24 @@ public:
 
 		unsigned char it = this->data;	// This is the char that i need for conversion to binary
 										// However using a signed char yields errors.
-		char str[8];
-		int index = 7;
+		char str[9];
+		int index = 8;
+		int offset = 0;
 
 		while (index + 1)
 		{
+			if (index == 4)
+			{
+				offset++;
+				str[index] = ' ';
+			}
 			if (it % 2)
 			{
-				str[index] = '1';
+				str[index - offset] = '1';
 			}
 			else
 			{
-				str[index] = '0';
+				str[index - offset] = '0';
 			}
 			it = it / 2;
 			index--;
@@ -86,20 +99,44 @@ public:
 		std::cout << std::endl;
 		return std::string(str);
 	}
+
+	std::string bin2()
+	{
+		char str[9];
+		char i = this->data;
+
+		for (int j = 0; j < 9; j++)
+		{
+			// printf("%x\t%x\n", i & 0xff, i & 0x80);
+			if (j == 4)
+				str[j] = ' ';
+			else
+			{
+				if ((i & 0x80) >> 7 == 1)
+					str[j] = '1';
+				else
+					str[j] = '0';
+				i = i << 1;
+			}
+		}
+	printf("\t%x\n", this->data & 0xff);
+	return str;
+	}
 };
 
 int main()
 {
 	// qpfloat& t = *(new qpfloat(INFINITY)); // less than minimum
 	// qpfloat& s = *(new qpfloat(-INFINITY)); // greater than maximum
-	qpfloat& u = *(new qpfloat(4.5));
+	qpfloat& u = *(new qpfloat(-12));
 	std::cout << u.bin() << std::endl;
+	std::cout << u.bin2() << std::endl;
 
 
-	float q = pow(2, -124);
-	char* cptr = (char*) malloc(sizeof(float));
-	float* fptr = &q;
-	cptr = (char*) fptr;
+	// float q = pow(2, -124);
+	// char* cptr = (char*) malloc(sizeof(float));
+	// float* fptr = &q;
+	// cptr = (char*) fptr;
 
 
 	return 0;
@@ -116,6 +153,13 @@ int main()
 10.1 = 2.5 bin
 1.01*2^1 = 2.5 bin
 0101 0010
+
+
+
+sign 	1xxx xxxx
+exp1	x11x xxxx
+exp2	xxx1 xxxx
+mant 	xxxx 1111
 
 
 */

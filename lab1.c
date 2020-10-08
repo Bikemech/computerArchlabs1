@@ -34,7 +34,7 @@ int main()
 
 	for (int i = 0; i < 4 * s; i++)
 	{
-		printf("%x\t", (int) mem[i] & 0xff);
+		printf("%02x ", (int) mem[i] & 0xff);
 		if (i % 4 == 3) printf("\n");
 	}
 	printf("\n");
