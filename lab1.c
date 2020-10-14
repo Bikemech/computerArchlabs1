@@ -4,9 +4,6 @@
 
 void signtype()
 {
-	char a = 127;
-	char b = -127;
-	char r = a & b;	// Bitwise and operation
 	/*
 	*	a & b 	===		0111 1111 &
 	*	127 & -127		1111 1111 =
@@ -16,6 +13,9 @@ void signtype()
 	* 	127 & -127		1000 0001 =
 	*					0000 0001 // for two's complement
 	*/
+	char a = 127;
+	char b = -127;
+	char r = a & b;	// Bitwise and operation
 
 	if (r == 1) printf("Using two's complement\n\n");
 	else if (r == 127) printf("Using signed integer\n\n");
@@ -26,7 +26,7 @@ void signtype()
 int main()
 {
 	int s = 8;
-	int offset = 2;
+	int offset = 4;
 	char* mem = (char*) malloc(sizeof(int) * s);
 	int* ptr = (int*) mem;
 

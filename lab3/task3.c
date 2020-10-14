@@ -1,56 +1,63 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-typedef struct _link
+typedef struct link_
 {
-	int data;
-	struct _link* head;
+	struct link_* head;
+	int val;
 } link;
 
-link* push(link* prev, int data)
+char* two_d_alloc(size_t rows, size_t columns, size_t elem_size)
+{
+	return (char*) malloc(rows * columns * elem_size);
+}
+
+void print_dump(char* p)
+{
+	printf("\t|%p| ", p);
+
+	for (int i = 0; i < 16; ++i)
+	{
+		if (i % 4 == 0) printf("\t");
+		printf("%02x", *(p + i) & 0xff);
+	}
+
+	printf("\t");
+		for (int i = 0; i < 16; ++i)
+	{
+		if (i % 4 == 0) printf("\t");
+		if (*(p + i) < 0xfe && *(p + i) >= 0x20) printf("%c", *(p + i));
+		else printf(".");
+	}
+
+	printf("\n");
+
+}
+
+link* push(link* head, int val)
 {
 	link* new = malloc(sizeof(link));
-	new->data = data;
-	new->head = prev;
+	new->val = val;
+	new->head = head;
 	return new;
-}
-
-int pop(link* head)
-{
-	link* temp = head;
-
-	head = head->head;
-    int val = head->data;
-    free(temp);
-    return val;
-}
-
-void iter_link(link* ptr)
-{
-	while (ptr)
-	{
-		printf("Data at %p\t%d\n", ptr, ptr->data);
-		ptr = ptr->head;
-	}
 }
 
 int main()
 {
-	link* list = NULL;
+	char* ptr = two_d_alloc(8, 8, sizeof(link));
 
-    for (int i = 0; i < 10; ++i)
-    {
-    	list = push(list, i);
-    }
+	link* lptr = (link*) ptr;
+	lptr->val = 0x31323334;
+	(lptr + 1)->head = lptr;
+	(lptr + 1)->val = 0x35363738;
 
-    iter_link(list);
+	print_dump(ptr);
+	print_dump(ptr + 0x10);
+	print_dump(ptr + 0x20);
+	print_dump(ptr + 0x30);
 
+	printf("%x\n", (lptr + 1)->head->val);
 
-    pop(list);
-
-    printf("\n");
-
-    iter_link(list);
 
 	return 0;
 }

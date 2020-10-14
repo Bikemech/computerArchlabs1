@@ -25,15 +25,16 @@ void two_d_dealloc(char* ptr)
 	free(ptr);
 }
 
+
 // \
 m = number of rows \
 n = number of columns \
 s = size of element \
-i = row position to access \
-j = column position to access \
+i = column position to access \
+j = row position to access \
 val = the value to store
 
-void two_d_store(char * ptr, size_t m, size_t n, size_t s, int i, int j, int val)
+void two_d_store(char * ptr, size_t m, size_t n, size_t s, int j, int i, int val)
 {
 	int index = n * s * i + s * j;
 	if (index > m * n * s || i >= m || j >= n) return;
@@ -41,7 +42,7 @@ void two_d_store(char * ptr, size_t m, size_t n, size_t s, int i, int j, int val
 	*(ptr + index) = val;
 }
 
-int two_d_fetch(char * ptr, size_t m, size_t n, size_t s, int i, int j)
+int two_d_fetch(char * ptr, size_t m, size_t n, size_t s, int j, int i)
 {
 	int index = n * s * i + s * j;
 	if (index > m * n * s || i >= m || j >= n) return 0;

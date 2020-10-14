@@ -41,12 +41,12 @@ void two_d_store(char * ptr, size_t m, size_t n, size_t s, int i, int j, int val
 	*(ptr + index) = val;
 }
 
-int two_d_fetch(char * ptr, size_t m, size_t n, size_t s, int i, int j)
+int* two_d_fetch(char * ptr, size_t m, size_t n, size_t s, int i, int j)
 {
 	int index = n * s * i + s * j;
-	if (index > m * n * s || i >= m || j >= n) return 0;
+	if (index > m * n * s || i >= m || j >= n) return NULL;
 
-	return *(ptr + index);
+	return (int*) (ptr + index); // parathesis are crucial becuase of the recasting
 }
 
 int main()
@@ -65,9 +65,15 @@ int main()
 
     print(p, n);
 
-	printf("\t%x\n", two_d_fetch(p, r, c, s, 1, 0) & 0xff);
-	printf("\t%x\n", two_d_fetch(p, r, c, s, 1, 3) & 0xff);
-	printf("\t%x\n", two_d_fetch(p, r, c, s, 7, 6) & 0xff);
+    *two_d_fetch(p, r, c, s, 1, 3) = 0xcc;
+
+	printf("\t%x\n", *two_d_fetch(p, r, c, s, 1, 0) & 0xff);
+	printf("\t%x\n", *two_d_fetch(p, r, c, s, 1, 3) & 0xff);
+	printf("\t%x\n", *two_d_fetch(p, r, c, s, 7, 6) & 0xff);
 
 	return 0;
 }
+
+
+int* p;
+char* t;

@@ -60,47 +60,11 @@ public:
 
 		this->data = sign | exp1 | exp2 | mant;
 
-		// printf("%x\t%x\t%x\t%x\t***\n", sign & 0xff, exp1 & 0xff, exp2 & 0xff, mant & 0xff);
-		// printf("%x\t<< float", this->data  & 0xff);
-
-
-		// printf("%x\n", sign & 0xff);
-
 		std::cout << std::endl;
 	}
 	~qpfloat();
+
 	std::string bin()
-	{
-
-		unsigned char it = this->data;	// This is the char that i need for conversion to binary
-										// However using a signed char yields errors.
-		char str[9];
-		int index = 8;
-		int offset = 0;
-
-		while (index + 1)
-		{
-			if (index == 4)
-			{
-				offset++;
-				str[index] = ' ';
-			}
-			if (it % 2)
-			{
-				str[index - offset] = '1';
-			}
-			else
-			{
-				str[index - offset] = '0';
-			}
-			it = it / 2;
-			index--;
-		}
-		std::cout << std::endl;
-		return std::string(str);
-	}
-
-	std::string bin2()
 	{
 		char str[9];
 		char i = this->data;
@@ -119,24 +83,30 @@ public:
 				i = i << 1;
 			}
 		}
-	printf("\t%x\n", this->data & 0xff);
 	return str;
 	}
 };
 
 int main()
 {
-	// qpfloat& t = *(new qpfloat(INFINITY)); // less than minimum
-	// qpfloat& s = *(new qpfloat(-INFINITY)); // greater than maximum
+	qpfloat& t = *(new qpfloat(INFINITY)); // less than minimum
+	std::cout << t.bin() << std::endl;
+
+	qpfloat& s = *(new qpfloat(-INFINITY)); // greater than maximum
+	std::cout << s.bin() << std::endl;
+
 	qpfloat& u = *(new qpfloat(-12));
 	std::cout << u.bin() << std::endl;
-	std::cout << u.bin2() << std::endl;
 
+	qpfloat& v = *(new qpfloat(12));
+	std::cout << v.bin() << std::endl;
 
-	// float q = pow(2, -124);
-	// char* cptr = (char*) malloc(sizeof(float));
-	// float* fptr = &q;
-	// cptr = (char*) fptr;
+	qpfloat& w = *(new qpfloat(0.043));
+	std::cout << w.bin() << std::endl;
+
+	qpfloat& p = *(new qpfloat(-5523323.502));
+	std::cout << p.bin() << std::endl;
+
 
 
 	return 0;
