@@ -42,22 +42,30 @@ link* push(link* head, int val)
 	return new;
 }
 
+link* push_p(link* head, int val)
+{
+	(head + 1)->val = val;
+	(head + 1)->head = head;
+	return head + 1;
+}
+
 int main()
 {
-	char* ptr = two_d_alloc(8, 8, sizeof(link));
+	char* ptr = two_d_alloc(16, 1, sizeof(link));
 
-	link* lptr = (link*) ptr;
-	lptr->val = 0x31323334;
-	(lptr + 1)->head = lptr;
-	(lptr + 1)->val = 0x35363738;
+	link* list = push_p((link*) ptr, 0x30);
+	link* home = list;
+	list->head = NULL;
 
-	print_dump(ptr);
-	print_dump(ptr + 0x10);
-	print_dump(ptr + 0x20);
-	print_dump(ptr + 0x30);
+	for (int i = 0; i < 10; i++)
+	{
+		list = push_p(list, i + 0x31);
+	}
 
-	printf("%x\n", (lptr + 1)->head->val);
-
+	for (int i = 0; i < 16; i++)
+	{
+		print_dump((char*) home + sizeof(link) * i);
+	}
 
 	return 0;
 }
