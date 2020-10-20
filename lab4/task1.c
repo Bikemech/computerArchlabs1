@@ -36,9 +36,11 @@ int main()
     int sz = buf_in(fd, buffer, &ptr);
 
     int i;
-    for (i = 0; i < 70; i++)
+    char c = 1;
+    while (c)
     {
-    	printf("%c ", buf_in(fd, buffer, &ptr));
+    	c = buf_in(fd, buffer, &ptr);
+    	printf("%c ", c);
     }
 
 
